@@ -6,7 +6,8 @@ import { useRouter } from 'next/router';
 
 
 
-const Home = () => {
+const Home = (prop) => {
+  console.log(prop);
   // const {data: session} = useSession()
   // const router = useRouter()
   // console.log(session);
@@ -37,7 +38,7 @@ export default Home;
 export async function getServerSideProps(context) {
   try {
     const session = await getSession({ req: context.req });
-
+    console.log(session);
     if (session) {
       return {
         redirect: {
