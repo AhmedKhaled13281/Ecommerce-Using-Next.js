@@ -2,12 +2,12 @@ import { connectToDb } from "@/lib/mongoDbConnect";
 import  {product } from "@/Models/ProductSchema";
 
 export default async function handler(req, res) {
-  const { title, description, price , imageUrls} = req.body;
+  const {id,  title, description, price , imageUrls , category} = req.body;
   await connectToDb();
 
   try {
     if (req.method === "POST") {
-        const productDoc = await product.create({ title, description, price , imageUrls});
+        const productDoc = await product.create({ title, description, price , imageUrls , category});
         res.status(200).json(productDoc);
     }
     
@@ -17,8 +17,8 @@ export default async function handler(req, res) {
     }
 
     if(req.method === "PUT"){
-      const { title, description, price , id , imageUrls} = req.body;
-      const updatedProduct = await product.updateOne({_id : id} , {title, description, price , imageUrls})
+      //const { title, description, price , id , imageUrls , category} = req.body;
+      const updatedProduct = await product.updateOne({_id : id} , {title, description, price , imageUrls , category})
       res.status(200).json({message : "Updated Successfully !"});
     }
 

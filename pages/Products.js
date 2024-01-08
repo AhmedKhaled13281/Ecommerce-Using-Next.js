@@ -12,8 +12,11 @@ const pageSize = 5;
 
 const Products = () => {
   const { mutate } = useSWRConfig()
+  const {data : categories} = useSWR("/api/categories/categoryApi" , fetcher)
+  console.log(categories)
   const { data, error, isLoading } = useSWR('/api/products/productApi', fetcher)
   mutate('/api/products/productApi')
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const [show, setShow] = useState(false);
@@ -38,8 +41,8 @@ const Products = () => {
 
   return (
     <div>
-      <ModalProduct show={show} handleClose={handleClose} handleShow={handleShow}/>
-      <div className='px-2'>
+      <ModalProduct categories={categories} show={show} handleClose={handleClose} handleShow={handleShow}/>
+      <div className='px-2' style={{fontFamily : "Cairo"}}>
         {currentItems?.map(product => (
           <div
             className="d-flex justify-content-between px-3 mt-3 flex-wrap"
@@ -53,10 +56,10 @@ const Products = () => {
             </div>
             <div className="d-flex">
               <div>
-                <EditModal product={product}/>
+                <EditModal product={product} categories={categories}/>
               </div>
               <div>
-                <DeleteModal id={product._id} title={product.title}/>
+                <DeleteModal id={product._id} title={product.title} deleteType="product" />
               </div>
             </div>
           </div>

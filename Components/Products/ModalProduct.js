@@ -9,6 +9,7 @@ import Toast from "../UI/ToastUI";
 import ToastUI from "../UI/ToastUI";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../config/firebaseConfig";
+import { category } from "@/Models/CategoriesSchema";
 
 const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -16,7 +17,7 @@ const renderTooltip = (props) => (
     </Tooltip>
   );
 
-const ModalProduct = ({ show, handleClose, handleShow }) => {
+const ModalProduct = ({ show, handleClose, handleShow , categories }) => {
   const [showToast , setShowToast] = useState(false)
   const [validated, setValidated] = useState(false);
   const productNameRef = useRef()
@@ -24,6 +25,11 @@ const ModalProduct = ({ show, handleClose, handleShow }) => {
   const priceRef = useRef()
   const [images , setImages] = useState([])
   const [imageUrls, setImageUrls] = useState([]);
+  const [dropDownValue , setDropDownValue] = useState('')
+
+  const handleDropDownInput = (e) => {
+    setDropDownValue(e.target.value);
+  };
 
   const handle = async (e) => {
     e.preventDefault()
@@ -37,9 +43,11 @@ const ModalProduct = ({ show, handleClose, handleShow }) => {
     const title = productNameRef.current.value
     const description = descriptionRef.current.value
     const price = priceRef.current.value
-    const data = {title , description , price , imageUrls}
+    const data = {title , description , price , imageUrls , category : dropDownValue}
+    const hasNonEmptyValues = Object.values(data).every(
+      (value) => !!value)
 
-    if(data.title && data.description && data.price && data.imageUrls){
+    if(data.title && data.description && data.imageUrls.length > 0 && data.price && data.category){
         //console.log(data);
         const res = await fetch('/api/products/productApi' , {
             method : "POST",
@@ -48,13 +56,14 @@ const ModalProduct = ({ show, handleClose, handleShow }) => {
         })
         const ff= await res.json()
         console.log(ff);
-        handleClose()
         setImages([])
+        setImageUrls([])
+        handleClose()
         setShowToast(true)
+        console.log(data);
     }
 
   }
-
   // Handle Upload Image
   const handleImageChange = async (e) => {
     const files = e.target.files;
@@ -124,6 +133,8 @@ const ModalProduct = ({ show, handleClose, handleShow }) => {
             images={images}
             handleImageChange={handleImageChange}
             handleDeleteImage={handleDeleteImage}
+            categories={categories}
+            handleDropDownInput={handleDropDownInput}
           />
         </Modal.Body>
         <Modal.Footer>

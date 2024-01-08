@@ -3,7 +3,7 @@ import { Button , Col ,Form , InputGroup , Row , FloatingLabel}from 'react-boots
 import { MdDeleteOutline } from "react-icons/md";
 import Image from "next/image";
 
-const AddForm = ({validated , handleSubmit , productNameRef , descriptionRef , priceRef , images , handleImageChange , handleDeleteImage}) => {
+const AddForm = ({validated , handleSubmit , productNameRef , descriptionRef , priceRef , images , handleImageChange , handleDeleteImage , handleDropDownInput , categories}) => {
 
   return (
     <>
@@ -20,6 +20,17 @@ const AddForm = ({validated , handleSubmit , productNameRef , descriptionRef , p
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
         </Row>
+
+        <Row>
+            <Form.Group className="mb-3">
+              <Form.Select onChange={handleDropDownInput}>
+                <option>No Parent Category</option>
+                {categories.map((item ,index) => (
+                  <option key={index}>{item?.categoryName}</option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+         </Row>
 
         <Row className="mb-3">
               <Form.Group as={Col} md="12" controlId="validationCustom01">

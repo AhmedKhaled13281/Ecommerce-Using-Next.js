@@ -4,23 +4,29 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { MdDeleteOutline } from "react-icons/md";
 
-const DeleteModal = ({id , title}) => {
+const DeleteModal = ({id , title , deleteType}) => {
   const [show, setShow] = useState(false);
   const [loading , setLoading] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const deleteApis = {
+     "product" : "/api/products/productApi",
+     "category" : "/api/categories/categoryApi",
+     "user" : "/api/users/usersApi"
+  }
+
   const handle = async () => {
     if(id){
-      const res = await fetch("/api/products/productApi", {
-        method: "DELETE",
-        body: JSON.stringify({ id }),
-        headers: { "Content-Type": "application/json" },
-      });
-      const ff = await res.json();
-      console.log(ff);
-      handleClose();
-      setLoading(true);
+        const res = await fetch(`${deleteApis[deleteType]}`, {
+          method: "DELETE",
+          body: JSON.stringify({ id }),
+          headers: { "Content-Type": "application/json" },
+        });
+        const ff = await res.json();
+        console.log(ff);
+        handleClose();
+        setLoading(true);
     }
   }
   return (

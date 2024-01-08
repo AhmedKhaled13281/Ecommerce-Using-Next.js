@@ -15,9 +15,10 @@ import { storage } from "../../config/firebaseConfig";
 // import {handleImageChange , handleDeleteImage} from '../../Utilities/imageHandle'
 
 import Image from "next/image";
+import { category } from "@/Models/CategoriesSchema";
 
 
-const EditModal = ({ product }) => {
+const EditModal = ({ product , categories}) => {
   const [validated, setValidated] = useState(false);
 
   const [title, setTitle] = useState(product.title || "");
@@ -25,6 +26,7 @@ const EditModal = ({ product }) => {
   const [price, setPrice] = useState(product.price || "");
   const [images, setImages] = useState(product.imageUrls || []);
   const [imageUrls, setImageUrls] = useState(product.imageUrls || []);
+  const [dropDownValue , setDropDownValue] = useState(product.category || '')
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -38,6 +40,7 @@ const EditModal = ({ product }) => {
       description: description,
       price: price,
       imageUrls: imageUrls,
+      category : dropDownValue
     };
 
     const hasNonEmptyValues = Object.values(updatedData).every(
@@ -55,13 +58,15 @@ const EditModal = ({ product }) => {
         headers: { "Content-Type": "application/json" },
       });
       console.log(await res.json());
-
+      console.log(updatedData);
       setValidated(true);
       handleClose();
     }
   };
 
-
+  const handleDropDownInput = (e) => {
+    setDropDownValue(e.target.value);
+  };
 
   // Handle Upload Image
   const handleImageChange = async (e) => {
@@ -127,6 +132,17 @@ const EditModal = ({ product }) => {
                 />
                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               </Form.Group>
+            </Row>
+
+            <Row>
+            <Form.Group className="mb-3">
+              <Form.Select value={dropDownValue} onChange={handleDropDownInput}>
+                <option>No Parent Category</option>
+                {categories.map((item ,index) => (
+                  <option key={index}>{item?.categoryName}</option>
+                ))}
+              </Form.Select>
+            </Form.Group>
             </Row>
 
             <Row className="mb-3">
