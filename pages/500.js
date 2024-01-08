@@ -1,9 +1,7 @@
-import React from 'react'
-
-const NotFound = () => {
-  return (
-    <div>NotFound</div>
-  )
+const Custom500 = () => {
+    return <h1>500 - Server-side error occurred</h1>
 }
 
-export default NotFound
+Custom500.layout = "L1"
+
+export default Custom500

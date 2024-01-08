@@ -1,10 +1,20 @@
 import Head from 'next/head'
-import { getSession} from "next-auth/react"
+import { useSession ,  getSession} from "next-auth/react"
 import LoginPage from '@/Components/LoginPage';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+
 
 
 const Home = () => {
-  
+  // const {data: session} = useSession()
+  // const router = useRouter()
+  // console.log(session);
+  // useEffect(() => {
+  //   if(session){
+  //     router.push("/AdminDashboard")
+  //   }
+  // } , [router , session])
   return (
     <>
       <Head>
@@ -21,7 +31,7 @@ const Home = () => {
 }
 
 Home.layout = "L1"
-
+export default Home;
 
 
 export async function getServerSideProps(context) {
@@ -41,11 +51,9 @@ export async function getServerSideProps(context) {
   } catch (error) {
     console.error("Error in getServerSideProps:", error);
 
+    // Instead of redirecting to "/500", consider logging the error details
     return {
-      redirect: {
-        destination: "/500", // Redirect to a generic error page
-        permanent: false,
-      },
+      props: { error: error.message }, // Pass the error message as a prop
     };
   }
 }
