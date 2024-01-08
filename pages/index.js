@@ -3,7 +3,7 @@ import { getSession} from "next-auth/react"
 import LoginPage from '@/Components/LoginPage';
 
 
-function Home(props) {
+const Home = () => {
   
   return (
     <>
@@ -21,6 +21,7 @@ function Home(props) {
 }
 
 Home.layout = "L1"
+
 
 
 export async function getServerSideProps(context) {
