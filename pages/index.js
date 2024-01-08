@@ -36,7 +36,7 @@ export default Home;
 
 
 export async function getServerSideProps(context) {
-  try {
+  // try {
     const session = await getSession({ req: context.req });
     console.log(session);
     if (session) {
@@ -49,12 +49,12 @@ export async function getServerSideProps(context) {
     }
 
     return { props: { session } };
-  } catch (error) {
-    console.error("Error in getServerSideProps:", error);
+  // } catch (error) {
+  //   console.error("Error in getServerSideProps:", error);
 
-    // Instead of redirecting to "/500", consider logging the error details
-    return {
-      props: { error: error.message }, // Pass the error message as a prop
-    };
-  }
+  //   // Instead of redirecting to "/500", consider logging the error details
+  //   return {
+  //     props: { error: error.message }, // Pass the error message as a prop
+  //   };
+  // }
 }
