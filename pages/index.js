@@ -1,12 +1,8 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import Button from 'react-bootstrap/Button';
-import { useSession, signIn, signOut  ,getSession} from "next-auth/react"
+import { getSession} from "next-auth/react"
 import LoginPage from '@/Components/LoginPage';
 
-import useSWR from 'swr'
-const fetcher = (...args) => fetch(...args).then(res => res.json())
+
 export default function Home(props) {
   
   return (
@@ -26,15 +22,29 @@ export default function Home(props) {
 
 Home.layout = "L1"
 
-export async function getServerSideProps (context) {
-  const session = await getSession({req : context.req})
-  if(session) {
-    return {
-      redirect : {
-        destination : "/AdminDashboard"
-      }
-    }
-  }
 
-   return { props : {session}}
+export async function getServerSideProps(context) {
+  try {
+    const session = await getSession({ req: context.req });
+
+    if (session) {
+      return {
+        redirect: {
+          destination: "/AdminDashboard",
+          permanent: false, // Set to false to allow redirects to work on subsequent visits
+        },
+      };
+    }
+
+    return { props: { session } };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+
+    return {
+      redirect: {
+        destination: "/500", // Redirect to a generic error page
+        permanent: false,
+      },
+    };
+  }
 }

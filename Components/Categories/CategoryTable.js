@@ -15,17 +15,14 @@ const CategoryTable = () => {
 
   const tableHead = ["Category Name", "Actions"];
 
-  if (isLoading) {
-    return <p>Loading ...</p>;
-  }
-
-  if (data.length == 0) {
+  if (isLoading || !data || data.length === 0) {
     return (
       <h3 className="d-flex justify-content-center align-items-center">
         Loading ...
       </h3>
     );
   }
+
 
   return (
     <div>

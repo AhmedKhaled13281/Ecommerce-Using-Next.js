@@ -5,11 +5,10 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import AddForm from "./AddForm";
-import Toast from "../UI/ToastUI";
 import ToastUI from "../UI/ToastUI";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../config/firebaseConfig";
-import { category } from "@/Models/CategoriesSchema";
+
 
 const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>

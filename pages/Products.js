@@ -23,7 +23,7 @@ const Products = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  if(isLoading) {
+  if(isLoading || !data || !categories) {
     return (
       <div>Loading ...</div>
       )

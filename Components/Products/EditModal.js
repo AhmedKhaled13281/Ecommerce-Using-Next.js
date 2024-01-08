@@ -12,10 +12,7 @@ import { LiaEditSolid } from "react-icons/lia";
 import { MdDeleteOutline } from "react-icons/md";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../config/firebaseConfig";
-// import {handleImageChange , handleDeleteImage} from '../../Utilities/imageHandle'
-
 import Image from "next/image";
-import { category } from "@/Models/CategoriesSchema";
 
 
 const EditModal = ({ product , categories}) => {

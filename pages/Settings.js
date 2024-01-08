@@ -13,11 +13,13 @@ const Settings = () => {
 
   console.log(data);
   const tableHead = ["Profile Picture", "Email" , "Actions"];
-  if(isLoading) {
+
+  if(isLoading || !data) {
     return       <h3 className="d-flex justify-content-center align-items-center">
     Loading ...
   </h3>
   }
+  
   return (
     <div>
       <table className="table">

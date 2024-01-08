@@ -8,6 +8,12 @@ const AdminDashboard = () => {
   const {data : categories} = useSWR('/api/categories/categoryApi' , fetcher)
   const {data : users} = useSWR('/api/users/usersApi' , fetcher)
 
+  if(!products || !categories && !users){
+   return  (
+      <div>Loading ...</div>
+      )
+  }
+
   return (
     <div>
       <Row className="d-flex flex-wrap justify-content-around p-2 fw-bold w-100" style={{fontFamily : "Cairo "}}>
