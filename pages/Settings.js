@@ -58,6 +58,7 @@ const Settings = () => {
   );
 };
 
+Settings.layout = "L2";
+
 export default Settings;
 
-Settings.layout = "L2";

@@ -7,8 +7,8 @@ import LoginPage from '@/Components/LoginPage';
 
 import useSWR from 'swr'
 const fetcher = (...args) => fetch(...args).then(res => res.json())
-export default function Home() {
-
+export default function Home(props) {
+  
   return (
     <>
       <Head>
@@ -35,5 +35,6 @@ export async function getServerSideProps (context) {
       }
     }
   }
-  return { props : {session}}
+
+   return { props : {session}}
 }

@@ -65,5 +65,6 @@ const Categories = () => {
   );
 };
 
-export default Categories;
 Categories.layout = "L2";
+
+export default Categories;
