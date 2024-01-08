@@ -3,7 +3,7 @@ import { getSession} from "next-auth/react"
 import LoginPage from '@/Components/LoginPage';
 
 
-export default function Home(props) {
+function Home(props) {
   
   return (
     <>
