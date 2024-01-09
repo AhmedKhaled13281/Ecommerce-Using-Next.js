@@ -17,7 +17,7 @@ export default NextAuth({
     })
   ],
 
-  adapter : MongoDBAdapter(clientPromise),
+  //adapter : MongoDBAdapter(clientPromise),
   
     async redirect(url, baseUrl) {
       // If a user is authenticated, redirect to "/AdminDashboard"
