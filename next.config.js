@@ -9,7 +9,7 @@ const nextConfig = {
     GOOGLE_SECRET : process.env.GOOGLE_SECRET,
     GITHUB_ID : process.env.GITHUB_ID,
     GITHUB_SECRET : process.env.GITHUB_SECRET,
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    NEXTAUTH_URL: process.env.NEXT_PUBLIC_URL,
     MONGODB_URI: process.env.MONGODB_URI,
     NEXTAUTH_SECRET: process.env.NEXT_PUBLIC_SECRET
   }
