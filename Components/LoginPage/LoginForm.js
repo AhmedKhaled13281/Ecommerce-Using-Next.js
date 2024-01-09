@@ -18,7 +18,7 @@ const LoginForm = () => {
         <h4 className='pe-3'>Login With Google</h4>
         <FcGoogle className='fs-1'/>
       </Button>
-      <Button variant="dark" className='d-flex justify-content-center' onClick={() => signIn("github" , {callbackUrl : process.env.NEXTAUTH_URL})}>
+      <Button variant="dark" className='d-flex justify-content-center' onClick={() => signIn("github" , {callbackUrl : process.env.NEXT_PUBLIC_URL})}>
         <h4 className='pe-3'>Login With Github</h4>
         <BsGithub className='fs-1'/>
       </Button>

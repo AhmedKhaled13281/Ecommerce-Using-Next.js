@@ -5,6 +5,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import GitHubProvider from "next-auth/providers/github";
 
 export default NextAuth({
+  secret: process.env.NEXT_PUBLIC_SECRET,
   providers: [
     // OAuth authentication providers...
     GoogleProvider({
@@ -17,7 +18,7 @@ export default NextAuth({
     })
   ],
 
-  //adapter : MongoDBAdapter(clientPromise),
+  adapter : MongoDBAdapter(clientPromise),
   
     async redirect(url, baseUrl) {
       // If a user is authenticated, redirect to "/AdminDashboard"
@@ -27,5 +28,6 @@ export default NextAuth({
   
       return baseUrl ;
     },
-    secret: process.env.NEXTAUTH_SECRET
+    
+
 })

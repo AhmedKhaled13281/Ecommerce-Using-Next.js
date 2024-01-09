@@ -8,14 +8,14 @@ import { useRouter } from 'next/router';
 
 const Home = (prop) => {
   console.log(prop);
-  // const {data: session} = useSession()
-  // const router = useRouter()
-  // console.log(session);
-  // useEffect(() => {
-  //   if(session){
-  //     router.push("/AdminDashboard")
-  //   }
-  // } , [router , session])
+  const {data: session} = useSession()
+  const router = useRouter()
+  console.log(session);
+  useEffect(() => {
+    if(session){
+      router.push("/AdminDashboard")
+    }
+  } , [router , session])
   return (
     <>
       <Head>
@@ -35,26 +35,19 @@ Home.layout = "L1"
 export default Home;
 
 
-export async function getServerSideProps(context) {
-  // try {
-    const session = await getSession({ req: context.req });
-    console.log(session);
-    if (session) {
-      return {
-        redirect: {
-          destination: "/AdminDashboard",
-          permanent: false, // Set to false to allow redirects to work on subsequent visits
-        },
-      };
-    }
+// export async function getServerSideProps(context) {
 
-    return { props: { session } };
-  // } catch (error) {
-  //   console.error("Error in getServerSideProps:", error);
+//     const session = await getSession({ req: context.req });
+//     console.log(session);
+//     if (session) {
+//       return {
+//         redirect: {
+//           destination: "/AdminDashboard",
+//           permanent: false, // Set to false to allow redirects to work on subsequent visits
+//         },
+//       };
+//     }
 
-  //   // Instead of redirecting to "/500", consider logging the error details
-  //   return {
-  //     props: { error: error.message }, // Pass the error message as a prop
-  //   };
-  // }
-}
+//     return { props: { session } };
+
+// }
