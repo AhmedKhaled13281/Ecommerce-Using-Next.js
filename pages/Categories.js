@@ -49,8 +49,8 @@ const Categories = () => {
             </Form.Group>
           </Col>
 
-          <Col className="d-flex justify-content-center align-items-center">
-              <Button variant="success" type="submit" className="w-25 ">
+          <Col className="d-flex justify-content-center align-items-center w-25 ">
+              <Button variant="success" type="submit" className="w-100">
                 Add Category
               </Button>
             </Col>
