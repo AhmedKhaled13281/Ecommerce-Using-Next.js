@@ -17,13 +17,11 @@ export default async function handler(req, res) {
     }
 
     if(req.method === "PUT"){
-      //const { title, description, price , id , imageUrls , category} = req.body;
       const updatedProduct = await product.updateOne({_id : id} , {title, description, price , imageUrls , category})
       res.status(200).json({message : "Updated Successfully !"});
     }
 
     if(req.method === "DELETE") {
-      const {id} = req.body;
       await product.deleteOne({_id : id})
       res.status(200).json({message : "Deleted Successfully !"});
     }

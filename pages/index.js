@@ -1,21 +1,9 @@
 import Head from 'next/head'
-import { useSession ,  getSession} from "next-auth/react"
+import { getSession} from "next-auth/react"
 import LoginPage from '@/Components/LoginPage';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 
+const Home = () => {
 
-
-const Home = (prop) => {
-  console.log(prop);
-  // const {data: session} = useSession()
-  // const router = useRouter()
-  // console.log(session);
-  // useEffect(() => {
-  //   if(session){
-  //     router.push("/AdminDashboard")
-  //   }
-  // } , [router , session])
   return (
     <>
       <Head>
@@ -43,7 +31,7 @@ export async function getServerSideProps(context) {
       return {
         redirect: {
           destination: "/AdminDashboard",
-          permanent: false, // Set to false to allow redirects to work on subsequent visits
+          permanent: false, 
         },
       };
     }

@@ -1,6 +1,7 @@
 import React from "react";
 import useSWR from "swr";
 import DeleteModal from "../Products/DeleteModal";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -16,11 +17,7 @@ const CategoryTable = () => {
   const tableHead = ["Category Name", "Actions"];
 
   if (isLoading || !data || data.length === 0) {
-    return (
-      <h3 className="d-flex justify-content-center align-items-center">
-        Loading ...
-      </h3>
-    );
+    return <LoadingSpinner />
   }
 
 

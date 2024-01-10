@@ -23,8 +23,7 @@ const DeleteModal = ({id , title , deleteType}) => {
           body: JSON.stringify({ id }),
           headers: { "Content-Type": "application/json" },
         });
-        const ff = await res.json();
-        console.log(ff);
+        console.log(await res.json());
         handleClose();
         setLoading(true);
     }

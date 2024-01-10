@@ -12,7 +12,7 @@ import {
   ListGroup,
 } from "react-bootstrap";
 import Image from "next/image";
-import { RxHamburgerMenu } from "react-icons/rx";
+import LoadingSpinner from "@/Components/UI/LoadingSpinner";
 
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
@@ -27,7 +27,7 @@ const NavBar = ({ children }) => {
   };
 
   if (status === "loading") {
-    return <p>Loading or not authenticated...</p>;
+    return <LoadingSpinner />;
   }
 
   const activeButton = "bg-white text-black";

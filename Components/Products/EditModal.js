@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useCallback, useState, useReducer, useEffect } from "react";
 import {
   Button,
   Col,
@@ -14,30 +14,78 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../config/firebaseConfig";
 import Image from "next/image";
 
+const initialState = {
+  title: "",
+  description: "",
+  price: "",
+  images: [],
+  imageUrls: [],
+  dropDownValue: "",
+  validated: false,
+  show: false,
+};
 
-const EditModal = ({ product , categories}) => {
-  const [validated, setValidated] = useState(false);
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_TITLE":
+      return { ...state, title: action.payload };
+    case "SET_DESCRIPTION":
+      return { ...state, description: action.payload };
+    case "SET_PRICE":
+      return { ...state, price: action.payload };
+    case "SET_IMAGES":
+      return { ...state, images: action.payload };
+    case "SET_IMAGE_URLS":
+      return { ...state, imageUrls: action.payload };
+    case "SET_DROP_DOWN_VALUE":
+      return { ...state, dropDownValue: action.payload };
+    case "SET_VALIDATED":
+      return { ...state, validated: action.payload };
+    case "SET_SHOW":
+      return { ...state, show: action.payload };
+    default:
+      return state;
+  }
+};
 
-  const [title, setTitle] = useState(product.title || "");
-  const [description, setDescription] = useState(product.description || "");
-  const [price, setPrice] = useState(product.price || "");
-  const [images, setImages] = useState(product.imageUrls || []);
-  const [imageUrls, setImageUrls] = useState(product.imageUrls || []);
-  const [dropDownValue , setDropDownValue] = useState(product.category || '')
+const EditModal = ({ product, categories }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  useEffect(() => {
+    // Set initial state based on product prop
+    if (product) {
+      dispatch({ type: "SET_TITLE", payload: product.title || "" });
+      dispatch({ type: "SET_DESCRIPTION", payload: product.description || "" });
+      dispatch({ type: "SET_PRICE", payload: product.price || "" });
+      dispatch({ type: "SET_IMAGES", payload: product.imageUrls || [] });
+      dispatch({ type: "SET_IMAGE_URLS", payload: product.imageUrls || [] });
+      dispatch({ type: "SET_DROP_DOWN_VALUE", payload: product.category || "" });
+    }
+  }, [product]);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleChange = useCallback(
+    (type) => (e) => {
+      dispatch({ type, payload: e.target.value });
+    },
+    [dispatch]
+  );
+
+  const handleClose = () => {
+    dispatch({ type: "SET_SHOW", payload: false });
+  };
+
+  const handleShow = () => {
+    dispatch({ type: "SET_SHOW", payload: true });
+  };
 
   const handle = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     const updatedData = {
-      title: title,
-      description: description,
-      price: price,
-      imageUrls: imageUrls,
-      category : dropDownValue
+      title: state.title,
+      description: state.description,
+      price: state.price,
+      imageUrls: state.imageUrls,
+      category: state.dropDownValue,
     };
 
     const hasNonEmptyValues = Object.values(updatedData).every(
@@ -48,7 +96,7 @@ const EditModal = ({ product , categories}) => {
       e.stopPropagation();
     }
 
-    if (hasNonEmptyValues && imageUrls.length > 0) {
+    if (hasNonEmptyValues && state.imageUrls.length > 0) {
       const res = await fetch("/api/products/productApi", {
         method: "PUT",
         body: JSON.stringify({ ...updatedData, id: product._id }),
@@ -56,13 +104,15 @@ const EditModal = ({ product , categories}) => {
       });
       console.log(await res.json());
       console.log(updatedData);
-      setValidated(true);
+
+      dispatch({ type: "SET_VALIDATED", payload: true });
       handleClose();
     }
   };
 
+
   const handleDropDownInput = (e) => {
-    setDropDownValue(e.target.value);
+    dispatch({ type: "SET_DROP_DOWN_VALUE", payload: e.target.value });
   };
 
   // Handle Upload Image
@@ -73,7 +123,7 @@ const EditModal = ({ product , categories}) => {
       const newImages = Array.from(files).map((file) =>
         URL.createObjectURL(file)
       );
-      setImages((prevImages) => [...prevImages, ...newImages]);
+      dispatch({ type: "SET_IMAGES", payload: [...state.images, ...newImages] });
 
       const imageRef = ref(storage, `images/${files[0].name + Date.now()}`);
       try {
@@ -81,7 +131,7 @@ const EditModal = ({ product , categories}) => {
         const url = await getDownloadURL(snapshot.ref);
 
         // Use the URL as needed, e.g., store it in state or perform further actions
-        setImageUrls((prev) => [...prev, url]);
+        dispatch({ type: "SET_IMAGE_URLS", payload: [...state.imageUrls, url] });
       } catch (error) {
         console.error("Error uploading image:", error);
       }
@@ -89,13 +139,13 @@ const EditModal = ({ product , categories}) => {
   };
 
   const handleDeleteImage = (index) => {
-    const updatedImages = [...images];
-    const updatedImagesUrls = [...imageUrls];
+    const updatedImages = [...state.images];
+    const updatedImagesUrls = [...state.imageUrls];
     updatedImagesUrls.splice(index, 1);
     updatedImages.splice(index, 1);
 
-    setImages(updatedImages);
-    setImageUrls(updatedImagesUrls);
+    dispatch({ type: "SET_IMAGES", payload: updatedImages });
+    dispatch({ type: "SET_IMAGE_URLS", payload: updatedImagesUrls });
   };
 
   return (
@@ -111,35 +161,37 @@ const EditModal = ({ product , categories}) => {
         <LiaEditSolid className="fs-4" />
         Edit
       </Button>
-      <Modal show={show} centered onHide={handleClose}>
+      <Modal show={state.show} centered onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form noValidate validated={validated} onSubmit={handle}>
+          <Form noValidate validated={state.validated} onSubmit={handle}>
             <Row className="mb-3">
               <Form.Group as={Col} md="12" controlId="validationCustom01">
                 <Form.Label>Product name</Form.Label>
                 <Form.Control
-                  onChange={(e) => setTitle(e.target.value)}
-                  value={title}
+                  onChange={handleChange("SET_TITLE")}
+                  value={state.title}
                   required
                   type="text"
                   placeholder="Product name"
                 />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               </Form.Group>
             </Row>
 
             <Row>
-            <Form.Group className="mb-3">
-              <Form.Select value={dropDownValue} onChange={handleDropDownInput}>
-                <option>No Parent Category</option>
-                {categories.map((item ,index) => (
-                  <option key={index}>{item?.categoryName}</option>
-                ))}
-              </Form.Select>
-            </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Select
+                  value={state.dropDownValue}
+                  onChange={handleChange("SET_DROP_DOWN_VALUE")}
+                >
+                  <option>No Parent Category</option>
+                  {categories.map((item, index) => (
+                    <option key={index}>{item?.categoryName}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
             </Row>
 
             <Row className="mb-3">
@@ -149,9 +201,9 @@ const EditModal = ({ product , categories}) => {
                   onChange={handleImageChange}
                   accept="image/*"
                   type="file"
-                  required={!imageUrls.length > 0}
+                  required={!state.imageUrls.length > 0}
                 />
-                {images.length > 0 && (
+                {state.images.length > 0 && (
                   <div
                     style={{
                       marginTop: "10px",
@@ -161,7 +213,7 @@ const EditModal = ({ product , categories}) => {
                       justifyContent: "center",
                     }}
                   >
-                    {images.map((image, index) => (
+                    {state.images.map((image, index) => (
                       <div
                         key={index}
                         className="d-flex align-items-center me-3 mb-3 flex-column"
@@ -191,8 +243,8 @@ const EditModal = ({ product , categories}) => {
               <Form.Group as={Col} md="12" controlId="validationCustom01">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
-                  onChange={(e) => setDescription(e.target.value)}
-                  value={description}
+                  onChange={handleChange("SET_DESCRIPTION")}
+                  value={state.description}
                   required
                   as="textarea"
                   placeholder="Write Your Description"
@@ -208,8 +260,8 @@ const EditModal = ({ product , categories}) => {
                 <InputGroup className="mb-3">
                   <InputGroup.Text>$</InputGroup.Text>
                   <Form.Control
-                    onChange={(e) => setPrice(e.target.value)}
-                    value={price}
+                    onChange={handleChange("SET_PRICE")}
+                    value={state.price}
                     required
                     min="0"
                     type="number"

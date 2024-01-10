@@ -13,7 +13,7 @@ const LoginForm = () => {
         <p className="text-body-tertiary text-center w-100">Welcome back! Please login to your account</p>
       </div>
       <div>
-      </div>
+
       <Button variant="primary" className='d-flex justify-content-center mb-3' onClick={() => signIn("google" , {callbackUrl : process.env.NEXTAUTH_URL})}>
         <h4 className='pe-3'>Login With Google</h4>
         <FcGoogle className='fs-1'/>
@@ -22,6 +22,7 @@ const LoginForm = () => {
         <h4 className='pe-3'>Login With Github</h4>
         <BsGithub className='fs-1'/>
       </Button>
+      </div>
     </div>
   );
 }

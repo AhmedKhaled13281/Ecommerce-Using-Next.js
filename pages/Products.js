@@ -1,10 +1,10 @@
 import React , {useState , useEffect} from 'react'
-import { getSession , useSession} from "next-auth/react";
 import useSWR, { useSWRConfig } from 'swr'
 import ModalProduct from '@/Components/Products/ModalProduct';
-import {Button , Col , Row , Container , Pagination } from 'react-bootstrap';
+import {Pagination } from 'react-bootstrap';
 import DeleteModal from '@/Components/Products/DeleteModal';
 import EditModal from '@/Components/Products/EditModal';
+import LoadingSpinner from '@/Components/UI/LoadingSpinner';
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
@@ -13,7 +13,6 @@ const pageSize = 5;
 const Products = () => {
   const { mutate } = useSWRConfig()
   const {data : categories} = useSWR("/api/categories/categoryApi" , fetcher)
-  console.log(categories)
   const { data, error, isLoading } = useSWR('/api/products/productApi', fetcher)
   mutate('/api/products/productApi')
 
@@ -25,7 +24,7 @@ const Products = () => {
 
   if(isLoading || !data || !categories) {
     return (
-      <div>Loading ...</div>
+      <LoadingSpinner />
       )
   }
 
