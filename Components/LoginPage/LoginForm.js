@@ -14,7 +14,7 @@ const LoginForm = () => {
       </div>
       <div>
 
-      <Button variant="primary" className='d-flex justify-content-center mb-3' onClick={() => signIn("google" , {callbackUrl : process.env.NEXTAUTH_URL})}>
+      <Button variant="primary" className='d-flex justify-content-center mb-3' onClick={() => signIn("google")}>
         <h4 className='pe-3'>Login With Google</h4>
         <FcGoogle className='fs-1'/>
       </Button>
