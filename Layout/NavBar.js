@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 
 const NavBar = ({ children }) => {
   const { data: session, status } = useSession();
+  console.log(session);
   const router = useRouter();
 
   const signOutHandler = async () => {

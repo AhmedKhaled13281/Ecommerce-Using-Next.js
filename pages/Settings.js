@@ -11,7 +11,7 @@ const Settings = () => {
   {
     refreshInterval: 10,
   });
-
+  console.log(data);
   const tableHead = ["Profile Picture", "Email" , "Actions"];
 
   if(isLoading || !data) {
