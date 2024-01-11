@@ -11,9 +11,6 @@ const Settings = () => {
   {
     refreshInterval: 10,
   });
-  console.log(data);
-  console.log(process.env.GOOGLE_ID);
-  console.log(process.env.GOOGLE_SECRET);
 
   const tableHead = ["Profile Picture", "Email" , "Actions"];
 
