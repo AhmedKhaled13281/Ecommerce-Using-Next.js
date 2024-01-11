@@ -24,6 +24,9 @@ export default NextAuth({
     async redirect(url, baseUrl) {
       // If a user is authenticated, redirect to "/AdminDashboard"
       if (url === '/') {
+        console.log(process.env.GOOGLE_ID);
+        console.log(process.env.GITHUB_SECRET);
+        console.log(process.env.NEXTAUTH_URL);
         return '/AdminDashboard';
       }
   
