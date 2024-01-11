@@ -11,7 +11,7 @@ const nextConfig = {
     GITHUB_SECRET : process.env.GITHUB_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     MONGODB_URI: process.env.MONGODB_URI,
-    NEXTAUTH_SECRET: process.env.NEXT_PUBLIC_SECRET
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET
   }
 };
 

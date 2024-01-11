@@ -19,7 +19,7 @@ export default NextAuth({
     })
   ],
 
-  secret: process.env.NEXT_PUBLIC_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   
     async redirect(url, baseUrl) {
       // If a user is authenticated, redirect to "/AdminDashboard"
