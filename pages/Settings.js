@@ -12,6 +12,9 @@ const Settings = () => {
     refreshInterval: 10,
   });
   console.log(data);
+  console.log(process.env.GOOGLE_ID);
+  console.log(process.env.GITHUB_SECRET);
+  console.log(process.env.NEXTAUTH_URL);
   const tableHead = ["Profile Picture", "Email" , "Actions"];
 
   if(isLoading || !data) {
